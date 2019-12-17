@@ -27,6 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OU
 #include <sstream>
 #include <string>
 #include <cwctype>
+#include <locale>
 #include "ifcpp/model/BasicTypes.h"
 #include "ifcpp/model/BuildingException.h"
 #include "ifcpp/model/BuildingObject.h"
@@ -159,7 +160,7 @@ void readTypeOfIntegerList( const std::wstring& str, std::vector<shared_ptr<T> >
 		else if( isspace( *ch ) )	{	++ch; }
 		else { break; }
 	}
-	
+
 	while( *ch != '\0' )
 	{
 		if( isspace(*ch) )
@@ -196,7 +197,7 @@ void readTypeOfIntegerList( const std::wstring& str, std::vector<shared_ptr<T> >
 		{
 			break;
 		}
-		
+
 		if( *ch == ')' )
 		{
 			break;
@@ -331,7 +332,7 @@ void readTypeOfRealList( const std::wstring& str, std::vector<shared_ptr<T> >& t
 		{
 			break;
 		}
-		
+
 		if( *ch == ')' )
 		{
 			break;
@@ -514,7 +515,7 @@ void readEntityReference( const std::wstring& str, shared_ptr<T>& target, const 
 	}
 	else if( str.compare(L"$")==0 )
 	{
-		
+
 	}
 	else if( str.compare(L"*")==0 )
 	{
@@ -576,7 +577,7 @@ void readSelectType( const std::wstring& item, shared_ptr<select_t>& result, con
 		}
 		return;
 	}
-	
+
 	// could be type like IFCPARAMETERVALUE(90)
 	std::wstring keyword;
 	std::wstring inline_arg;
@@ -590,7 +591,7 @@ void readSelectType( const std::wstring& item, shared_ptr<select_t>& result, con
 	std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> StringConverter;
 	std::string type_name_upper = StringConverter.to_bytes(keyword);
 	std::transform( type_name_upper.begin(), type_name_upper.end(), type_name_upper.begin(), toupper );
-	
+
 	shared_ptr<BuildingObject> type_instance = TypeFactory::createTypeObject( type_name_upper.c_str(), inline_arg, map_entities );
 	if( type_instance )
 	{
@@ -636,7 +637,7 @@ void readSelectList( const std::wstring& arg_complete, std::vector<shared_ptr<se
 	std::wstring arg( pos_opening+1, pos_closing-pos_opening-1 );
 	std::vector<std::wstring> list_items;
 	tokenizeList( arg, list_items );
-	
+
 	std::stringstream err;
 	for( size_t i=0; i<list_items.size(); ++i )
 	{
@@ -680,7 +681,7 @@ void readEntityReferenceList( const wchar_t* arg_complete, std::vector<shared_pt
 		if( arg_complete != nullptr )
 		{
 			if( *arg_complete == '$' )
-			{ 
+			{
 				// empty list
 				return;
 			}
@@ -714,7 +715,7 @@ void readEntityReferenceList( const wchar_t* arg_complete, std::vector<shared_pt
 	{
 		std::stringstream err;
 		err << "object with id ";
-		
+
 		for( size_t i=0; i<vec_not_found.size(); ++i )
 		{
 			err	<< vec_not_found[i];
@@ -748,7 +749,7 @@ void readEntityReferenceList2D( const std::wstring& str, std::vector<std::vector
 	{
 		return;
 	}
-	
+
 	wchar_t* last_token = ch;
 	int num_par_open = 0;
 	while( *ch != '\0' )
@@ -798,7 +799,7 @@ void readEntityReferenceList3D( const std::string& str, std::vector<std::vector<
 	{
 		return;
 	}
-	
+
 	int num_par_open = 0;
 	char* ch = (char*)str.c_str();
 	char* last_token = ch;
